@@ -1,6 +1,6 @@
 module OpticalBlochEquations
 
-export signals, signals_for_pmap, fill_n2Fm_ats_e, fill_n2Fm_ats_g
+export signals, signals_for_pmap, fill_n2Fm_ats_e, fill_n2Fm_ats_g, param, lazers
 
 # Write your package code here.
 
@@ -17,14 +17,49 @@ include("../src/param.jl")
 include("../src/polarization.jl")
 
 """ Lande Factor """
-function LandeFactorJ(J,L,S)
-    return 1+(J*(J+1)+S*(S+1)-L*(L+1))/(2*J*(J+1))
+#function LandeFactorJ(J,L,S)
+#    return 1+(J*(J+1)+S*(S+1)-L*(L+1))/(2*J*(J+1))
+#end
+#
+
+#function LandeFactorF(F,I,J, gJ) 
+#    return gJ*(F*(F+1)-I*(I+1)+J*(J+1))/(2*F*(F+1))
+#end
+
+function fill_n2Fm_ats_g(par::param)
+    Fg_array = Int[]
+    mg_array = Int[]
+    for Fg = Int(par.grFmax):-1:Int(par.grFmin)
+        Fg_array = [Fg_array; fill(Fg, 2*Fg + 1)]
+        mg_array = [mg_array; Fg:-1:-Fg]
+    end
+    return hcat(Fg_array, mg_array)
 end
 
-
-function LandeFactorF(F,I,J, gJ) 
-    return gJ*(F*(F+1)-I*(I+1)+J*(J+1))/(2*F*(F+1))
+function fill_n2Fm_ats_e(par::param)
+    Fe_array = Int[]
+    me_array = Int[]
+    for Fe = Int(par.exFmax):-1:Int(par.exFmin)
+        Fe_array = [Fe_array; fill(Fe, 2*Fe + 1)]
+        me_array = [me_array; Fe:-1:-Fe]
+    end
+    return hcat(Fe_array, me_array)
 end
+
+function fill_gDict(n2Fm_ats_g)
+    inds = axes(n2Fm_ats_g, 1)
+    return [repeat(inds, inner=length(inds)) repeat(inds, outer=length(inds))]
+end
+
+function fill_eDict(n2Fm_ats_e)
+    inds = axes(n2Fm_ats_e, 1)
+    return [repeat(inds, inner=length(inds)) repeat(inds, outer=length(inds))]
+end
+
+function mirror_around_end(array)
+    return [array; 2*array[end] .- array[1:end-1] |> reverse]
+end
+
 
 """ Index - magnetic sublevel dictionaries """
 function mF1(n2Fm_ats_g, g)
@@ -822,7 +857,36 @@ end
 
 #dstep_length=dscan/2
 
-function signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e, dscan=dscan, dstep_length=dstep_length, e_vec_n=e_vec_n, e_vect_z=e_vect_z, sigma=sigma)
+#function signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e, dscan=dscan, dstep_length=dstep_length, e_vec_n=e_vec_n, e_vect_z=e_vect_z, sigma=sigma)
+function signals(B₀, par, laz, evecs, Doppler_steps)
+    # polarization vectors
+    e_vec_i=evecs[1]
+    e_vec_n=evecs[2]
+    e_vect_z=evecs[3]
+
+    # Dictionaries
+    n2Fm_ats_g = fill_n2Fm_ats_g(par)
+    n2Fm_ats_e = fill_n2Fm_ats_e(par)
+
+    gDict = fill_gDict(n2Fm_ats_g)
+    eDict = fill_eDict(n2Fm_ats_e)
+    #induced relaxation
+    λ = zeros(Complex{Float64}, par.dim_g * par.dim_g + par.dim_e * par.dim_e)
+    for index = axes(gDict, 1)
+        gi = gDict[index, 1]
+        gj = gDict[index, 2]
+        if (gi == gj)
+            λ[index] = laz.γ / par.dim_g
+        end
+    end
+
+    """Dopler shift"""
+    step_lit = 2
+    sigma = sqrt(laz.kB * laz.T / laz.masa) * laz.ω_svitr / laz.c
+    dscan = 2 * sigma * step_lit
+    dstep_nr = Doppler_steps * step_lit #number of steps
+    dstep_length = dscan / dstep_nr
+
     println("Processing magnetic field B₀=", B₀, " G."      )
     eigvals_gr, eigvects_gr, eigvals_ex, eigvects_ex = magn_field(par, laz, B₀,
                                                                   par.JIfmbasis_gr, par.Jzfmbasis_gr, par.Izfmbasis_gr,
@@ -906,7 +970,8 @@ function signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e, dscan=dsc
     return (I_Doplera, A_Doplera, rho_g, rho_e) # [I_Doplera, A_Doplera]   ### FHG 2024-02-19 added return for rho_g, rho_e
 end
 
-signals_for_pmap(B₀) = signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e)
+#signals_for_pmap(B₀) = signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e)
+
 
 
 

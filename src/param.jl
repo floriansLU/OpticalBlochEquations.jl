@@ -2,7 +2,7 @@ using QuantumOptics
 using WignerSymbols
 using Parameters
 
-include("../src/AtomicTransitions.jl")
+#include("../src/AtomicTransitions.jl")
 include("../src/lande.jl")
 
 """
@@ -245,36 +245,3 @@ muB_MHz: Bohr magneton
     muB_MHz::Float64 = 1.3996 #MHz
 end
 
-function fill_n2Fm_ats_g(par::param)
-    Fg_array = Int[]
-    mg_array = Int[]
-    for Fg = Int(par.grFmax):-1:Int(par.grFmin)
-        Fg_array = [Fg_array; fill(Fg, 2*Fg + 1)]
-        mg_array = [mg_array; Fg:-1:-Fg]
-    end
-    return hcat(Fg_array, mg_array)
-end
-
-function fill_n2Fm_ats_e(par::param)
-    Fe_array = Int[]
-    me_array = Int[]
-    for Fe = Int(par.exFmax):-1:Int(par.exFmin)
-        Fe_array = [Fe_array; fill(Fe, 2*Fe + 1)]
-        me_array = [me_array; Fe:-1:-Fe]
-    end
-    return hcat(Fe_array, me_array)
-end
-
-function fill_gDict(n2Fm_ats_g)
-    inds = axes(n2Fm_ats_g, 1)
-    return [repeat(inds, inner=length(inds)) repeat(inds, outer=length(inds))]
-end
-
-function fill_eDict(n2Fm_ats_e)
-    inds = axes(n2Fm_ats_e, 1)
-    return [repeat(inds, inner=length(inds)) repeat(inds, outer=length(inds))]
-end
-
-function mirror_around_end(array)
-    return [array; 2*array[end] .- array[1:end-1] |> reverse]
-end
