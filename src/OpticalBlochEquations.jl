@@ -894,11 +894,11 @@ function signals(B₀, par, laz, evecs, Doppler_steps)
                                                                   par.JIfmbasis_ex, par.Jzfmbasis_ex, par.Izfmbasis_ex)
 
     
-    #local dip_star = lmx_fillDipoleMatrix_star(par,e_vec_i,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e) #izveido dipolu matricu
-    #local dip=lmx_fillDipoleMatrix(par,e_vec_i,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)
+    local dip_star = lmx_fillDipoleMatrix_star(par,e_vec_i,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e) #izveido dipolu matricu
+    local dip=lmx_fillDipoleMatrix(par,e_vec_i,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)
     
-    local dip_star = lin_fillDipoleMatrix_star(par, e_vec_i, n2Fm_ats_g, n2Fm_ats_e) #izveido dipolu matricu
-    local dip = lin_fillDipoleMatrix(par, e_vec_i, n2Fm_ats_g, n2Fm_ats_e)
+    #local dip_star = lin_fillDipoleMatrix_star(par, e_vec_i, n2Fm_ats_g, n2Fm_ats_e) #izveido dipolu matricu
+    #local dip = lin_fillDipoleMatrix(par, e_vec_i, n2Fm_ats_g, n2Fm_ats_e)
 
     #Fm2E_g = Evals_g(par.Izfmbasis_gr, par.Jzfmbasis_gr, par.F²fmbasis_gr, par.dim_g, eigvals_gr, eigvects_gr)
     #Fm2E_e = Evals_e(par.Izfmbasis_ex, par.Jzfmbasis_ex, par.F²fmbasis_ex, par.dim_e, eigvals_ex, eigvects_ex)
