@@ -1,5 +1,12 @@
+using Distributed
+@everywhere begin
+    
 using OpticalBlochEquations
 using Test
+using Plots
+gr()
+using DelimitedFiles
+
 
 #include("../src/param.jl")
 include("../src/polarization.jl")
@@ -57,30 +64,34 @@ include("../src/AtomicTransitions.jl")
     #signals(B₀, params, laser, evecs, Doppler_steps)
     signals_for_pmap(B₀) = signals(B₀, params, laser, evecs, Doppler_steps)
     Brange=[-5.0,0.0,5.0]
-    res = @timed map(signals_for_pmap, Brange)
-    #CsI=[]
-    #CsA=[]
+    #Brange=[-40,-35,-30,-25,-20,-15,-10,-8,-6,-5,-4,-3,-2,-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,
+    #0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,2,3,4,5,6,8,10,15,20,25,40]
+    res = @timed pmap(signals_for_pmap, Brange)
+    CsI=[]
+    CsA=[]
 
-    #for i in 1:length(Brange)
-    #    push!(CsA,res[1][i][2] |> real)
-    #    push!(CsI,res[1][i][1] |> real)
-    #end
+    for i in 1:length(Brange)
+        push!(CsA,res[1][i][2] |> real)
+        push!(CsI,res[1][i][1] |> real)
+    end
 
-    ##default(legend=false)
-    #p = plot(Brange, CsA)
-    #plot!(p, title="A ar Doplera efektu", xlabel="B")
-    #savefig(p, "A-ar-doplera-efektu.png")
+    #default(legend=false)
+    p = plot(Brange, CsA)
+    plot!(p, title="A ar Doplera efektu", xlabel="B")
+    savefig(p, "A-ar-doplera-efektu.png")
 
-    #p = plot(Brange, CsI)
-    #plot!(p, title="I ar Doplera efektu", xlabel="B")
-    #savefig(p, "I-ar-doplera-efektu.png")
+    p = plot(Brange, CsI)
+    plot!(p, title="I ar Doplera efektu", xlabel="B")
+    savefig(p, "I-ar-doplera-efektu.png")
 
-    #open("I_Doplera.txt", "w") do io       ### FHG added 2024-02-02
-    #    writedlm(io, [Brange CsI] )               ### FHG added 2024-02-02
-    #end                                    ### FHG added 2024-02-02
+    open("I_Doplera.txt", "w") do io       ### FHG added 2024-02-02
+        writedlm(io, [Brange CsI] )               ### FHG added 2024-02-02
+    end                                    ### FHG added 2024-02-02
 
-    #open("A_Doplera.txt", "w") do io       ### FHG added 2024-02-02
-    #    writedlm(io, [Brange CsA] )                ### FHG added 2024-02-02
-    #end                                    ### FHG added 2024-02-02
+    open("A_Doplera.txt", "w") do io       ### FHG added 2024-02-02
+        writedlm(io, [Brange CsA] )                ### FHG added 2024-02-02
+    end                                    ### FHG added 2024-02-02
 
-end
+end # end @test
+
+end # end @everywhere

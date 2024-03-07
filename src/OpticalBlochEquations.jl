@@ -12,6 +12,7 @@ using Plots
 gr()
 using DelimitedFiles
 using BenchmarkTools
+using Distributed
 
 include("../src/param.jl")
 include("../src/polarization.jl")
