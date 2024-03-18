@@ -979,7 +979,7 @@ function signals(B₀, par, laz, evecs, Doppler_steps)
     return (I_Doplera, A_Doplera, rho_g, rho_e) # [I_Doplera, A_Doplera]   ### FHG 2024-02-19 added return for rho_g, rho_e
 end
 
-#signals_for_pmap(B₀) = signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e)
+#signals_for_pmap(B₀) = signals(B₀, par, laz, evecs, Doppler_steps)
 
 
 

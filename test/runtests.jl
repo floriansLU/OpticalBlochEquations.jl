@@ -9,8 +9,8 @@ using DelimitedFiles
 
 
 #include("../src/param.jl")
-include("../src/polarization.jl")
-include("../src/AtomicTransitions.jl")
+#include("../src/polarization.jl")
+#include("../src/AtomicTransitions.jl")
 
 
 @testset "OpticalBlochEquations.jl" begin
@@ -75,7 +75,7 @@ include("../src/AtomicTransitions.jl")
         push!(CsI,res[1][i][1] |> real)
     end
 
-    #default(legend=false)
+    default(legend=false)
     p = plot(Brange, CsA)
     plot!(p, title="A ar Doplera efektu", xlabel="B")
     savefig(p, "A-ar-doplera-efektu.png")
