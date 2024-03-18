@@ -1,6 +1,11 @@
 module OpticalBlochEquations
 
-export signals, signals_for_pmap, fill_n2Fm_ats_e, fill_n2Fm_ats_g, param, lazers, plotProbSurface
+export signals, signals_for_pmap
+export fill_n2Fm_ats_e, fill_n2Fm_ats_g
+export param, lazers
+export cezijsD1, cezijsD2
+export ElectricVector
+export plotProbSurf
 
 # Write your package code here.
 
@@ -18,6 +23,7 @@ using FastTransforms
 include("../src/param.jl")
 include("../src/polarization.jl")
 include("../src/ProbabilitySurfaces.jl")
+include("../src/AtomicTransitions.jl")
 
 """ Lande Factor """
 #function LandeFactorJ(J,L,S)

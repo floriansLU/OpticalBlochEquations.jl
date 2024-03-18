@@ -6,15 +6,15 @@ using Plots
 gr()
 
 #include("../src/param.jl")
-include("../src/polarization.jl")
-include("../src/AtomicTransitions.jl")
-include("../src/ProbabilitySurfaces.jl")
+#include("../src/polarization.jl")
+#include("../src/AtomicTransitions.jl")
+#include("../src/ProbabilitySurfaces.jl")
 
 @testset "OpticalBlochEquations.jl" begin
     # Write your tests here.
 
-    params = param(cezijsD1)
-    laser = lazers()
+    params = param(cezijsD1);
+    laser = lazers();
 
 
 
@@ -40,5 +40,6 @@ include("../src/ProbabilitySurfaces.jl")
     ρee=res[4]
     ρggJ4=ρgg[1:9,1:9]
     J=4
-    plotProbSurf(J,ρggJ4)
+    surface=plotProbSurf(J,ρggJ4)
+    show(surface)
 end
