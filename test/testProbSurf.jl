@@ -28,7 +28,7 @@ gr()
 
 
 
-    B₀=0
+    B₀=1000
     evecs=(e_vec_i,e_vec_n,e_vect_z)
     Doppler_steps=150
     #signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e)
