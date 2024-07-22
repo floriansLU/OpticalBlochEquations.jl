@@ -4,8 +4,7 @@
 
 ## Basic functionality
 The package OpticalBlochEquations.jl is suitable for use in a REPL or in a Jupyter notebook. 
-
-A typical session for producing the output similar to Fig.~\ref{fig:doppler} is shown in the following example. 
+A typical session is shown in the following example. 
 
 First, the necessary packages must be loaded. 
 
