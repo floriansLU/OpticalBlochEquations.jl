@@ -9,8 +9,8 @@ Computes the light vector E from Cartesian to Cyclic coordinates, to be compatab
 INPUT
 E vector in Cartesian coordinates
 pol: polarization of the light - +1, 0 or -1
-θ: angle from z axis
-ϕ: angle from x axis
+θ: rotation angle about y-axis
+ϕ: rotation angle about z'-axis
 
 OUTPUT
 E vector in Cyclic coordinates with 3 q components: -1, 0 and +1 respectively
@@ -34,7 +34,7 @@ struct ElectricVector
         #     initial = [1 / sqrt(2), -(1 / sqrt(2))im, 0]
         # end
 
-        initials = Dict(1  => [1 / sqrt(2), (1 / sqrt(2))im, 0],
+        initials = Dict(1  => [-1 / sqrt(2), (-1 / sqrt(2))im, 0], # FHG 2024-07-22: added minus signs
                         0  => [0, 0, 1],
                         -1 => [1 / sqrt(2), -(1 / sqrt(2))im, 0])
 
