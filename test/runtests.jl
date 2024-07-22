@@ -63,9 +63,9 @@ using DelimitedFiles
     #signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e)
     #signals(B₀, params, laser, evecs, Doppler_steps)
     signals_for_pmap(B₀) = signals(B₀, params, laser_params, evecs, Doppler_steps)
-    #Brange=[-5.0,0.0,5.0]
-    Brange=[-40,-35,-30,-25,-20,-15,-10,-8,-6,-5,-4,-3,-2,-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,
-    0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,2,3,4,5,6,8,10,15,20,25,40]
+    Brange=[-5.0,0.0,5.0]
+    #Brange=[-40,-35,-30,-25,-20,-15,-10,-8,-6,-5,-4,-3,-2,-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,
+    #0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,2,3,4,5,6,8,10,15,20,25,40]
     res = @timed pmap(signals_for_pmap, Brange)
     CsI=[]
     CsA=[]
