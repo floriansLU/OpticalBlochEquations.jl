@@ -1,6 +1,8 @@
 # OpticalBlochEquations
 
 [![Build Status](https://github.com/floriansLU/OpticalBlochEquations.jl/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/floriansLU/OpticalBlochEquations.jl/actions/workflows/CI.yml?query=branch%3Amaster)
+
+## Basic functionality
 The package OpticalBlochEquations.jl is suitable for use in a REPL or in a Jupyter notebook. 
 
 A typical session for producing the output similar to Fig.~\ref{fig:doppler} is shown in the following example. 
@@ -44,6 +46,20 @@ Now we can compute the signals. The output of the function is a tuple that conta
 signals(B₀, params, laser_params, evecs, Doppler_steps)
 ```
 
+## Plotting a probability surface
+We can plot a probability surface of the atomic angular momentum distribution under the calculated conditions (magnetic field, laser, polarization) as follows
+```julia
+    res=signals_for_pmap(B₀)
+    ρgg=res[3]
+    ρee=res[4]
+    ρggJ4=ρgg[1:9,1:9]
+    J=4
+    surface=plotProbSurf(J,ρggJ4)
+    show(surface)
+```
+
+
+## Distributed Computing
 In the event that we would like to calculate the signals over a wide range of magnetic-field values, it might be advantageous to use the Distributed.jl package with the function pmap. 
 In that case, before loading the packages above, we should load the Distributed.jl package and start the macro @everywhere:
 
