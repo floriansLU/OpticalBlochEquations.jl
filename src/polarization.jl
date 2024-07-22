@@ -34,7 +34,7 @@ struct ElectricVector
         #     initial = [1 / sqrt(2), -(1 / sqrt(2))im, 0]
         # end
 
-        initials = Dict(1  => [1 / sqrt(2), (1 / sqrt(2))im, 0],
+        initials = Dict(1  => [-1 / sqrt(2), (-1 / sqrt(2))im, 0], # FHG 2024-07-22: added minus signs
                         0  => [0, 0, 1],
                         -1 => [1 / sqrt(2), -(1 / sqrt(2))im, 0])
 

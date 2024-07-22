@@ -33,13 +33,13 @@ Efs: energy difference between the ground and excited level of the induced hyper
 
     gI::Float64 = -0.00039885395 
 
-    #Sīkstruktūras konstantes
+    #Hyperfine structure constants
     A_gr::Float64 = 2298.1579425  
 
     A_ex::Float64 = 291.9201  
     B_ex::Float64 = 0.0 
 
-    #Sīkstruktūras enerģijas starpība
+    #Fine structure energy level separation
     Efs::Float64 = 335116048.807 
 
 end
@@ -59,13 +59,13 @@ end
 
     gI::Float64 = -0.00039885395
 
-    #Sīkstruktūras konstantes
+    #Hyperfine structure constants
     A_gr::Float64 = 2298.1579425 
 
     A_ex::Float64 = 50.28827  
     B_ex::Float64 = -0.4934
 
-    #Sīkstruktūras enerģijas starpība
+    #Fine structure energy level separation
     Efs::Float64 = 351725718.50
 
 end
