@@ -58,26 +58,26 @@ struct param
     Jz_ex::Operator
     mJmIbasisF²_ex::Operator
 
-    function param(cezijsD)
+    function param(cesiumD)
 
-        J1 = cezijsD().J1
-        J2 = cezijsD().J2
-        nucI = cezijsD().nucI
-        exFmax = cezijsD().exFmax
-        exFmin = cezijsD().exFmin
-        grFmax = cezijsD().grFmax
-        grFmin = cezijsD().grFmin
-        S1 = cezijsD().S1
-        S2 = cezijsD().S2
-        L1 = cezijsD().L1
-        L2 = cezijsD().L2
+        J1 = cesiumD().J1
+        J2 = cesiumD().J2
+        nucI = cesiumD().nucI
+        exFmax = cesiumD().exFmax
+        exFmin = cesiumD().exFmin
+        grFmax = cesiumD().grFmax
+        grFmin = cesiumD().grFmin
+        S1 = cesiumD().S1
+        S2 = cesiumD().S2
+        L1 = cesiumD().L1
+        L2 = cesiumD().L2
 
-        gI = cezijsD().gI
+        gI = cesiumD().gI
 
-        A_gr = cezijsD().A_gr
-        A_ex = cezijsD().A_ex
-        B_ex = cezijsD().B_ex
-        Efs = cezijsD().Efs
+        A_gr = cesiumD().A_gr
+        A_ex = cesiumD().A_ex
+        B_ex = cesiumD().B_ex
+        Efs = cesiumD().Efs
 
 
         dim_g = Int64((2 * J1 + 1) * (2 * nucI + 1))
@@ -223,24 +223,24 @@ end
 Ωᵣ: Rabi frequency
 Γ: spontaneous relaxation constant
 γ: induced relaxation
-ω_svitr: central laser frequency
+ω_bar: central laser frequency
 Δω: laser linewidth
 kB: Bolcman constant
 T: Temperature
-masa: mass of one atom of the vapor
+mass: mass of one atom of the vapor
 c: speed of light
 muB_MHz: Bohr magneton
 
 """
-@with_kw struct lazers
+@with_kw struct laser
     Ωᵣ::ComplexF64 = 1.0 + 0.0im
     Γ::ComplexF64 = 4.575 + 0.0im
     γ::ComplexF64 = 0.019 + 0.0im
-    ω_svitr::Float64 = 335120562.8#D1 3->3 transition
+    ω_bar::Float64 = 335120562.8#D1 3->3 transition
     Δω::Float64 = 4 #2 #MHz  #FHG 2024-01-31 
     kB::Float64 = 1.3806504 * 10^-23
     T::Float64 = 298
-    masa::Float64 = 2.206211106 * 10^-25
+    mass::Float64 = 2.206211106 * 10^-25
     c::Float64 = 2.99792458 * 10^8
     muB_MHz::Float64 = 1.3996 #MHz
 end

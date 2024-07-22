@@ -13,27 +13,27 @@ gr()
 @testset "OpticalBlochEquations.jl" begin
     # Write your tests here.
 
-    params = param(cezijsD1);
-    laser = lazers();
+    params = param(cesiumD1);
+    laser_params = laser();
 
 
 
 
 #ierosmes, novērošanas un zondēšanas ģeometrijas definēšana (pol, θ, ϕ)
-    e_vec_i = ElectricVector(1, π / 2, 0).cyclic
-    e_vec_n = ElectricVector(1, π / 2, π / 2).cyclic
-    e_vect_z = ElectricVector(0, π / 2, π / 4).cyclic
+    e_vec_ex = ElectricVector(1, π / 2, 0).cyclic
+    e_vec_obs = ElectricVector(1, π / 2, π / 2).cyclic
+    e_vec_probe = ElectricVector(0, π / 2, π / 4).cyclic
 
 
 
 
 
     B₀=1000
-    evecs=(e_vec_i,e_vec_n,e_vect_z)
+    evecs=(e_vec_ex,e_vec_obs,e_vec_probe)
     Doppler_steps=150
     #signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e)
     #signals(B₀, params, laser, evecs, Doppler_steps)
-    signals_for_pmap(B₀) = signals(B₀, params, laser, evecs, Doppler_steps)
+    signals_for_pmap(B₀) = signals(B₀, params, laser_params, evecs, Doppler_steps)
     #Brange=[-5.0,0.0,5.0]
     res=signals_for_pmap(B₀)
     ρgg=res[3]
