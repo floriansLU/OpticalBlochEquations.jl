@@ -1,6 +1,24 @@
 # OpticalBlochEquations
-
 [![Build Status](https://github.com/floriansLU/OpticalBlochEquations.jl/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/floriansLU/OpticalBlochEquations.jl/actions/workflows/CI.yml?query=branch%3Amaster)
+
+## Introduction
+The Optical Bloch Equations (OBEs) are useful for calculating the evolution of the density matrix of an atomic ensemble under the action of some Hamiltonian. A common situation concerns atoms with hyperfine structure that interact with an external magnetic field and laser radiation. We present a toolkit for solving the OBEs based on the \textit{QuantumOptics.jl} package in the Julia language. Using these tools makes the code much more readable than previous implementations in C/C++, but almost as fast and easier to parallelize. The toolkit includes functions for calculating the steady-state solution of density matrix of alkali metal atoms in the presence of an external magnetic field and exposed to a pump laser beam of arbitrary polarization and propagation direction. Based on this density matrix, the toolkit offer functions to determine the fluorescence intensity of arbitrary polarization and direction as well as the absorption of a weak probe beam, also of arbitrary polarization and propagation direction. The density matrix can be obtained and from the density matrix, angular momentum distributions can be calculated and plotted.
+
+## Activating the project
+At the moment, the package has not been registered yet. Therefore, to use it, it must be activated in your environment. Create a project directory and perform the following steps
+```
+shell> git clone https://github.com/floriansLU/OpticalBlochEquations.jl.git
+Cloning into 'OpticalBlochEquations.jl'...
+...
+
+(@v1.8) pkg> activate OpticalBlochEquations.jl
+Activating project at `~/OpticalBlochEquations.jl`
+
+(Example) pkg> instantiate
+  No Changes to `~/OpticalBlochEquations.jl/Project.toml`
+  No Changes to `~/OpticalBlochEquations.jl/Manifest.toml`
+```
+
 
 ## Basic functionality
 The package OpticalBlochEquations.jl is suitable for use in a REPL or in a Jupyter notebook. 
