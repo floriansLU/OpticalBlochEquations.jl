@@ -78,19 +78,19 @@ using DelimitedFiles
     default(legend=false)
     p = plot(Brange, CsA)
     plot!(p, title="A ar Doplera efektu", xlabel="B")
-    savefig(p, "A-ar-doplera-efektu.png")
+    #savefig(p, "A-ar-doplera-efektu.png")
 
     p = plot(Brange, CsI)
     plot!(p, title="I ar Doplera efektu", xlabel="B")
-    savefig(p, "I-ar-doplera-efektu.png")
+    #savefig(p, "I-ar-doplera-efektu.png")
 
-    open("I_Doplera.txt", "w") do io       ### FHG added 2024-02-02
-        writedlm(io, [Brange CsI] )               ### FHG added 2024-02-02
-    end                                    ### FHG added 2024-02-02
+    #open("I_Doplera.txt", "w") do io       ### FHG added 2024-02-02
+    #    writedlm(io, [Brange CsI] )               ### FHG added 2024-02-02
+    #end                                    ### FHG added 2024-02-02
 
-    open("A_Doplera.txt", "w") do io       ### FHG added 2024-02-02
-        writedlm(io, [Brange CsA] )                ### FHG added 2024-02-02
-    end                                    ### FHG added 2024-02-02
+    #open("A_Doplera.txt", "w") do io       ### FHG added 2024-02-02
+    #    writedlm(io, [Brange CsA] )                ### FHG added 2024-02-02
+    #end                                    ### FHG added 2024-02-02
 
 end # end @test
 
