@@ -43,7 +43,7 @@ struct ElectricVector
         #                0  => [0, 0, 1],
         #                -1 => [1 / sqrt(2), -(1 / sqrt(2))im, 0])
 
-        # contravariant spherical vectors
+        ## contravariant spherical vectors
         initials = Dict(1  => [-1 / sqrt(2), (1 / sqrt(2))im, 0], # FHG 2024-07-22: added minus signs
                         0  => [0, 0, 1],
                         -1 => [1 / sqrt(2), (1 / sqrt(2))im, 0])
@@ -55,14 +55,15 @@ struct ElectricVector
         #R2 = [cos(ϕ) -sin(ϕ) 0; sin(ϕ) cos(ϕ) 0; 0 0 1]
 
         ##Kopējā transformācijas matrica
-        #3R = R2 * R1
+        #R = R2 * R1
 
         ##Dekarta vektora transformācija
         #rotated_cart = R * initials[pol]
 
         #Pareja no Dekarta uz cikliskajam koordinātām
         #cyclic = U * rotated_cart
-        cyclic = initials[pol] * wignerD(1,α,β,γ)
+        #cyclic = transpose(initials[pol]) * wignerD(1,α,β,γ)
+        cyclic =  wignerD(1,α,β,γ) * initials[pol]
 
         #new(pol, θ, ϕ, cyclic)
         new(pol, α, β, γ, cyclic)
