@@ -12,7 +12,7 @@ export plotProbSurf
 using SparseArrays
 using QuantumOptics
 using WignerSymbols
-using WignerD
+#using WignerD
 using QuantumOptics.steadystate
 using Plots
 gr()

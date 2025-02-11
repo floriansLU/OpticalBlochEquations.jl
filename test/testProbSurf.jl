@@ -20,12 +20,12 @@ gr()
 
 
 #ierosmes, novērošanas un zondēšanas ģeometrijas definēšana (pol, θ, ϕ)
-    #e_vec_ex = ElectricVector(1, π / 2, 0).cyclic
-    #e_vec_obs = ElectricVector(1, π / 2, π / 2).cyclic
-    #e_vec_probe = ElectricVector(0, π / 2, π / 4).cyclic
-    e_vec_ex = ElectricVector(1, 0, π / 2, 0).cyclic
-    e_vec_obs = ElectricVector(1, 0, π / 2, π / 2).cyclic
-    e_vec_probe = ElectricVector(0, 0, π / 2, π / 4).cyclic
+    e_vec_ex = ElectricVector(1, π / 2, 0).cyclic
+    e_vec_obs = ElectricVector(1, π / 2, π / 2).cyclic
+    e_vec_probe = ElectricVector(0, π / 2, π / 4).cyclic
+    #e_vec_ex = ElectricVector(1, 0, π / 2, 0).cyclic
+    #e_vec_obs = ElectricVector(1, 0, π / 2, π / 2).cyclic
+    #e_vec_probe = ElectricVector(0, 0, π / 2, π / 4).cyclic
 
 
 
