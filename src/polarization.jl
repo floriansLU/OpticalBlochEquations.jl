@@ -1,5 +1,5 @@
 using LinearAlgebra
-using WignerD
+#using WignerD
 
 """
 ElectricVector(pol, θ, ϕ)
