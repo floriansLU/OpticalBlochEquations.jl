@@ -48,6 +48,11 @@ struct ElectricVector
         #                0  => [0, 0, 1],
         #                -1 => [1 / sqrt(2), (1 / sqrt(2))im, 0])
 
+        ## contravariant spherical vectors
+        #initials = Dict(1  => [-1 / sqrt(2), (1 / sqrt(2))im, 0], # FHG 2024-07-22: added minus signs
+        #                0  => [0, 0, 1],
+        #                -1 => [1 / sqrt(2), (1 / sqrt(2))im, 0])
+
         #pagrieziena m-ca ap y asi 
         R1 = [cos(θ) 0 sin(θ); 0 1 0; -sin(θ) 0 cos(θ)]
 
