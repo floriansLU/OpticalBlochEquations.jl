@@ -67,7 +67,8 @@ struct ElectricVector
 
     #    #Pareja no Dekarta uz cikliskajam koordinātām
     #    cyclic = U * rotated_cart
-        cyclic = initials[pol] * wignerD(1,α,β,γ)
+    #    cyclic = Transpose(initials[pol])  wignerD(1,α,β,γ)
+    cyclic = wignerD(1,α,β,γ) * initials[pol]
 
     #    new(pol, θ, ϕ, cyclic)
         new(pol, α, β, γ, cyclic)
