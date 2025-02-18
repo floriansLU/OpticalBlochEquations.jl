@@ -18,9 +18,10 @@ E vector in Cyclic coordinates with 3 q components: -1, 0 and +1 respectively
 """
 
 struct ElectricVector
-    pol::Int
+    #pol::Int
     #θ::Float64
     #ϕ::Float64
+    pol::Vector{ComplexF64}
     α::Float64
     β::Float64
     γ::Float64
@@ -44,9 +45,9 @@ struct ElectricVector
     #                    -1 => [1 / sqrt(2), -(1 / sqrt(2))im, 0])
 
         # contravariant spherical vectors
-        initials = Dict(1  => [-1 / sqrt(2), (1 / sqrt(2))im, 0], # FHG 2024-07-22: added minus signs
-                        0  => [0, 0, 1],
-                        -1 => [1 / sqrt(2), (1 / sqrt(2))im, 0])
+        #initials = Dict(1  => [-1 / sqrt(2), (1 / sqrt(2))im, 0], # FHG 2024-07-22: added minus signs
+        #                0  => [0, 0, 1],
+        #                -1 => [1 / sqrt(2), (1 / sqrt(2))im, 0])
 
         ## contravariant spherical vectors
         #initials = Dict(1  => [-1 / sqrt(2), (1 / sqrt(2))im, 0], # FHG 2024-07-22: added minus signs
@@ -68,8 +69,8 @@ struct ElectricVector
     #    #Pareja no Dekarta uz cikliskajam koordinātām
     #    cyclic = U * rotated_cart
     #    cyclic = Transpose(initials[pol])  wignerD(1,α,β,γ)
-    cyclic = wignerD(1,α,β,γ) * initials[pol]
-
+    #cyclic = wignerD(1,α,β,γ) * initials[pol]
+    cyclic = wignerD(1,α,β,γ)' * pol
     #    new(pol, θ, ϕ, cyclic)
         new(pol, α, β, γ, cyclic)
     end
