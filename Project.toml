@@ -1,7 +1,7 @@
 name = "OpticalBlochEquations"
 uuid = "2604418b-be7b-43f5-81c6-21ef1c423e5b"
 authors = ["Dace Osīte", "Florian Gahbauer", "Janis Strods"]
-version = "1.0.1-DEV"
+version = "1.1.0-DEV"
 
 [deps]
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"

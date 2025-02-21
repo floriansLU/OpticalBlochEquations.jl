@@ -26,15 +26,7 @@ include("../src/polarization.jl")
 include("../src/ProbabilitySurfaces.jl")
 include("../src/AtomicTransitions.jl")
 
-""" Lande Factor """
-#function LandeFactorJ(J,L,S)
-#    return 1+(J*(J+1)+S*(S+1)-L*(L+1))/(2*J*(J+1))
-#end
-#
 
-#function LandeFactorF(F,I,J, gJ) 
-#    return gJ*(F*(F+1)-I*(I+1)+J*(J+1))/(2*F*(F+1))
-#end
 
 function fill_n2Fm_ats_g(par::param)
     Fg_array = Int[]
@@ -234,10 +226,7 @@ function lmx_fillDipoleMatrix_star(par::param,e_vec,eigvects_gr,eigvects_ex,n2Fm
 end
 
 function lmx_dip(j1,j2,I,e,g,q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)
-    #f1=F1(g)
-    #f2=F2(e)
-    #m1=mF1(g)
-    #m2=mF2(e)
+
     eps=1.0e-3
     f1=[]; f2=[]
     m1=[]; m2=[];
@@ -246,8 +235,8 @@ function lmx_dip(j1,j2,I,e,g,q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)
     for element in eigvects_gr[g].data
         index += 1
         if norm(element) > eps
-            f=F1(n2Fm_ats_g,index) #getF_gr(eigvect,par)
-            m=mF1(n2Fm_ats_g,index) #getm_gr(eigvect,par)
+            f=F1(n2Fm_ats_g,index) 
+            m=mF1(n2Fm_ats_g,index) 
             push!(f1,f)
             push!(m1,m)
             push!(coef_gr,norm(element))
@@ -257,28 +246,25 @@ function lmx_dip(j1,j2,I,e,g,q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)
     for element in eigvects_ex[e].data
         index +=1
         if norm(element) > eps
-            f=F2(n2Fm_ats_e,index) #getF_ex(eigvect,par)
-            m=mF2(n2Fm_ats_e,index) #getm_ex(eigvect,par)
+            f=F2(n2Fm_ats_e,index) 
+            m=mF2(n2Fm_ats_e,index) 
             push!(f2,f)
             push!(m2,m)
             push!(coef_ex,norm(element))
         end
     end
     value=0
-    for i in eachindex(m1) #eachindex(f1)
-        for j in eachindex(m2) #eachindex(f2)
+    for i in eachindex(m1) 
+        for j in eachindex(m2) 
             value += coef_gr[i]*coef_ex[j]*lin_six_j(f1[i],f2[j],j1,j2,I)*lin_three_j(f1[i],m1[i],f2[j],m2[j],q)
         end
     end
-    #value=lin_six_j(f1,f2,j1,j2,I)*lin_three_j(f1,m1,f2,m2,q)
+    
     return value
 end
 
 function lmx_dip_star(j1,j2,I,e,g,q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)
-    #f1=F1(g)
-    #f2=F2(e)
-    #m1=mF1(g)
-    #m2=mF2(e)
+
     eps=1.0e-3
     f1=[]; f2=[]
     m1=[]; m2=[];
@@ -287,8 +273,8 @@ function lmx_dip_star(j1,j2,I,e,g,q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_
     for element in eigvects_gr[g].data
         index += 1
         if norm(element) > eps          #eigvect is just a coefficient, not a ket
-            f=F1(n2Fm_ats_g,index) #getF_gr(eigvect,par)     #need to get the original F,mF value corresponding to that position. 
-            m=mF1(n2Fm_ats_g, index) #getm_gr(eigvect,par)     # maybe don't need operators. Already done in dict?
+            f=F1(n2Fm_ats_g,index)      #need to get the original F,mF value corresponding to that position. 
+            m=mF1(n2Fm_ats_g, index)    # maybe don't need operators. Already done in dict?
             push!(f1,f)
             push!(m1,m)
             push!(coef_gr,norm(element))
@@ -298,20 +284,20 @@ function lmx_dip_star(j1,j2,I,e,g,q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_
     for element in eigvects_ex[e].data
         index += 1
         if norm(element) > eps
-            f=F2(n2Fm_ats_e,index) #getF_ex(eigvect,par)
-            m=mF2(n2Fm_ats_e,index) #getm_ex(eigvect,par)
+            f=F2(n2Fm_ats_e,index) 
+            m=mF2(n2Fm_ats_e,index) 
             push!(f2,f)
             push!(m2,m)
             push!(coef_ex,norm(element))
         end
     end
     value=0
-    for i in eachindex(m1) #eachindex(f1)
-        for j in eachindex(m2) #eachindex(f2)
+    for i in eachindex(m1) 
+        for j in eachindex(m2) 
             value += coef_gr[i]*coef_ex[j]*lin_six_j_star(f1[i],f2[j],j1,j2,I)*lin_three_j_star(f1[i],m1[i],f2[j],m2[j],q)
         end
     end
-    #value = lin_three_j_star(f1,m1,f2,m2,q)*lin_six_j_star(f1,f2,j1,j2,I)
+    
     return value
 end
 
@@ -452,15 +438,15 @@ OUTPUT
 
 """
 
-#function ksi_f(par::param, laz::laser, g, e, Fm2E_g, Fm2E_e, detune, n2Fm_ats_g, n2Fm_ats_e)
+
 function ksi_f(par::param, laz::laser, g, e, detune, eigvals_g, eigvals_e)
-    #laz.Ωᵣ^2 / (((laz.Γ + laz.Δω) / 2) + laz.γ + 1.0im * (detune - omega_ge(par, g, e, Fm2E_g, Fm2E_e, n2Fm_ats_g, n2Fm_ats_e)))
+    
     laz.Ωᵣ^2 / (((laz.Γ + laz.Δω) / 2) + laz.γ + 1.0im * (detune - (par.Efs + eigvals_e[e]-eigvals_g[g])))
 end
 
-#function ksi_cc_f(par::param, laz::laser, e, g, Fm2E_g, Fm2E_e, detune, n2Fm_ats_g, n2Fm_ats_e)
+
 function ksi_cc_f(par::param, laz::laser, e, g, detune, eigvals_g, eigvals_e)
-    #laz.Ωᵣ^2 / (((laz.Γ + laz.Δω) / 2) + laz.γ - 1.0im * (detune - omega_ge(par, g, e, Fm2E_g, Fm2E_e, n2Fm_ats_g, n2Fm_ats_e)))
+    
     laz.Ωᵣ^2 / (((laz.Γ + laz.Δω) / 2) + laz.γ - 1.0im * (detune - (par.Efs + eigvals_e[e]-eigvals_g[g])))
 end
 
@@ -483,24 +469,24 @@ OUTPUT
 
 """
 
-#function fill_ksi(par::param, laz::laser, Fm2E_g, Fm2E_e, dim_g, dim_e, detune, n2Fm_ats_g, n2Fm_ats_e)
+
 function fill_ksi(par::param, laz::laser, dim_g, dim_e, detune, eigvals_g, eigvals_e)
     ksi = spzeros(Complex{Float64}, dim_g, dim_e)
     for e = 1:dim_e
         for g = 1:dim_g
-            #ksi[g, e] = ksi_f(par, laz, g, e, Fm2E_g, Fm2E_e, detune, n2Fm_ats_g, n2Fm_ats_e)
+            
             ksi[g, e] = ksi_f(par, laz, g, e, detune, eigvals_g, eigvals_e)
         end
     end
     return ksi
 end
 
-#function fill_ksi_cc(par::param, laz::laser, Fm2E_g, Fm2E_e, dim_e, dim_g, detune, n2Fm_ats_g, n2Fm_ats_e)
+
 function fill_ksi_cc(par::param, laz::laser, dim_e, dim_g, detune, eigvals_g, eigvals_e)    
     ksi_cc = spzeros(Complex{Float64}, dim_e, dim_g)
     for g = 1:dim_g
         for e = 1:dim_e
-            #ksi_cc[e, g] = ksi_cc_f(par, laz, e, g, Fm2E_g, Fm2E_e, detune, n2Fm_ats_g, n2Fm_ats_e)
+          
             ksi_cc[e, g] = ksi_cc_f(par, laz, e, g, detune, eigvals_g, eigvals_e)
         end
     end
@@ -538,45 +524,19 @@ function GAMMA_f(Γ, g1, g2, e1, e2, j1, j2, I, n2Fm_ats_g, n2Fm_ats_e)
 end
 
 
-#function GAMMA_f_lmx(Γ,g1,g2,e1,e2,j1,j2,I,eigvects_gr, eigvects_ex,n2Fm_ats_g,n2Fm_ats_e) 
-#    sum = 0
-#    for i in 1:length(eigvects_gr[g1].data) 
-#        for j in 1:length(eigvects_ex[e1].data)
-#            for l in 1:length(eigvects_gr[g2].data)
-#                for k in 1:length(eigvects_ex[e2].data)
-#                    if mF2(n2Fm_ats_e,j)-mF1(n2Fm_ats_g,i) == mF2(n2Fm_ats_e,k)-mF1(n2Fm_ats_g,l)
-##    if mF2(e1)-mF1(g1) == mF2(e2)-mF1(g2) 
-#                       for q in -1:+1:+1
-#                            #coeff=eig
-#                            sum+=lmx_dip(j1,j2,I,e1,g1,q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)*lmx_dip_star(j1,j2,I,e2,g2,-q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)*(-1)^q
-#                       end
-#                    end
-#                end
-#            end
-#        end    
-#    end 
-#    sum*=(2*j2+1)*Γ
-#    return sum
-#end
+
 
 function GAMMA_f_lmx_2(Γ,g1,g2,e1,e2,j1,j2,I,eigvects_gr, eigvects_ex,n2Fm_ats_g,n2Fm_ats_e) 
     sum = 0
-#    for i in 1:length(eigvects_gr[g1].data) 
-#        for j in 1:length(eigvects_ex[e1].data)
-#            for l in 1:length(eigvects_gr[g2].data)
-#                for k in 1:length(eigvects_ex[e2].data)
-                    #if mF2(n2Fm_ats_e,j)-mF1(n2Fm_ats_g,i) == mF2(n2Fm_ats_e,k)-mF1(n2Fm_ats_g,l)
+
                         if mF2(n2Fm_ats_e, e1) - mF1(n2Fm_ats_g, g1) == mF2(n2Fm_ats_e, e2) - mF1(n2Fm_ats_g, g2)
-                        #    if mF2(e1)-mF1(g1) == mF2(e2)-mF1(g2) 
+                       
                        for q in -1:+1:+1
-                            #coeff=eig
+                            
                             sum+=lmx_dip(j1,j2,I,e1,g1,q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)*lmx_dip_star(j1,j2,I,e2,g2,-q,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)*(-1)^q
                        end
                     end
- #               end
- #           end
- #       end    
- #   end 
+ 
     sum*=(2*j2+1)*Γ
     return sum
 end
@@ -694,11 +654,11 @@ Ground state coeficient matrix C.
 
 """
 
-#function ρDotgg(γ, gDict, matr, dim_g, dim_e, ksi, ksi_cc, dip, dip_star, Fm2E_g, GAMMA, n2Fm_ats_g)
+
 function ρDotgg(γ, gDict, matr, dim_g, dim_e, ksi, ksi_cc, dip, dip_star, eigvals_g, GAMMA)
-    #for index = axes(gDict, 1)
-    for gi = 1:dim_g  #gDict[index, 1]
-      for  gj = 1:dim_g #gDict[index, 2]
+    
+    for gi = 1:dim_g  
+      for  gj = 1:dim_g 
         index=(gi-1)*dim_g+gj
         for ek = range(1, length=dim_e)
             for em = range(1, length=dim_e)
@@ -722,7 +682,7 @@ function ρDotgg(γ, gDict, matr, dim_g, dim_e, ksi, ksi_cc, dip, dip_star, eigv
             end
         end
 
-        #matr[index, (gi - 1)*16 + gj] += -1.0im * omega_g(Fm2E_g, n2Fm_ats_g, gi, gj)
+        
         matr[index, (gi - 1)*dim_g + gj] += -1.0im * (eigvals_g[gi]-eigvals_g[gj])
         matr[index, (gi - 1)*dim_g + gj] += -γ
       end
@@ -742,11 +702,11 @@ Excited state coeficient matrix C.
 
 """
 
-#function ρDotee(laz::laser, eDict, gDict, matr, dim_g, dim_e, ksi, ksi_cc, dip, dip_star, Fm2E_e, n2Fm_ats_e)
+
 function ρDotee(laz::laser, eDict, gDict, matr, dim_g, dim_e, ksi, ksi_cc, dip, dip_star, eigvals_e)
-    #for index = axes(eDict, 1)
-    for ei = 1:dim_e #eDict[index, 1]
-      for ej = 1:dim_e #eDict[index, 2]
+  
+    for ei = 1:dim_e 
+      for ej = 1:dim_e 
         index=(ei-1)*dim_e+ej
         for gk = range(1, length=dim_g)
             for gm = range(1, length=dim_g)
@@ -766,7 +726,7 @@ function ρDotee(laz::laser, eDict, gDict, matr, dim_g, dim_e, ksi, ksi_cc, dip,
             end
         end
 
-        #matr[size(gDict, 1) + index, size(gDict, 1) + (ei - 1)*16 + ej] += -1.0im * omega_e(Fm2E_e, n2Fm_ats_e, ei, ej)
+        
         matr[dim_g*dim_g + index, dim_g*dim_g + (ei - 1)*dim_e + ej] += -1.0im * (eigvals_e[ei]-eigvals_e[ej])
         matr[dim_g*dim_g + index, dim_g*dim_g + (ei - 1)*dim_e + ej] += -(laz.Γ + laz.γ)
       end
@@ -789,7 +749,7 @@ Transition dipole matrix and its complex conjugate matrix.
 
 """
 
-#function nov_fillDipoleMatrix(par::param, e_vec, n2Fm_ats_g, n2Fm_ats_e)
+
 function nov_fillDipoleMatrix(par::param, e_vec, eigvects_g, eigvects_e, n2Fm_ats_g, n2Fm_ats_e)
     j1 = par.J1
     j2 = par.J2
@@ -800,19 +760,10 @@ function nov_fillDipoleMatrix(par::param, e_vec, eigvects_g, eigvects_e, n2Fm_at
     dip_p = spzeros(Complex{Float64}, dim_e, dim_g)
     dip_0 = spzeros(Complex{Float64}, dim_e, dim_g)
     dip_m = spzeros(Complex{Float64}, dim_e, dim_g)
-    #for g = axes(n2Fm_ats_g, 1)
-    #    for e = axes(n2Fm_ats_e, 1)
-    #        dip_p[e, g] = e_vec[1] * lin_dip(j1, j2, I, e, g, +1, n2Fm_ats_g, n2Fm_ats_e)
-    #        dip_0[e, g] = e_vec[2] * lin_dip(j1, j2, I, e, g, 0, n2Fm_ats_g, n2Fm_ats_e)
-    #        dip_m[e, g] = e_vec[3] * lin_dip(j1, j2, I, e, g, -1, n2Fm_ats_g, n2Fm_ats_e)
-    #    end
-    #end
-    for g in 1:1:dim_g  #g in keys(n2Fm_ats_g) 
-        for e in 1:1:dim_e #e in keys(n2Fm_ats_e) 
-            #dip_p[eDictInv[5,e],gDictInv[5,g]]=e_vec[1]*lin_dip(j1,j2,I,e,g,+1) 
-            #dip_p[eDictInv[5,e],gDictInv[5,g]]=e_vec[1]*lmx_dip(j1,j2,I,e,g,+1,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e) 
-            #dip_0[eDictInv[5,e],gDictInv[5,g]]=e_vec[2]*lmx_dip(j1,j2,I,e,g,0,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
-            #dip_m[eDictInv[5,e],gDictInv[5,g]]=e_vec[3]*lmx_dip(j1,j2,I,e,g,-1,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
+
+    for g in 1:1:dim_g  
+        for e in 1:1:dim_e  
+
             dip_p[e,g]=e_vec[1]*lmx_dip(j1,j2,I,e,g,+1,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e) 
             dip_0[e,g]=e_vec[2]*lmx_dip(j1,j2,I,e,g,0,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
             dip_m[e,g]=e_vec[3]*lmx_dip(j1,j2,I,e,g,-1,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
@@ -825,7 +776,7 @@ function nov_fillDipoleMatrix(par::param, e_vec, eigvects_g, eigvects_e, n2Fm_at
     return dip
 end
 
-#function nov_fillDipoleMatrix_star(par::param, e_vec, n2Fm_ats_g, n2Fm_ats_e)
+
 function nov_fillDipoleMatrix_star(par::param, e_vec, eigvects_g, eigvects_e, n2Fm_ats_g, n2Fm_ats_e)
     j1 = par.J1
     j2 = par.J2
@@ -836,19 +787,10 @@ function nov_fillDipoleMatrix_star(par::param, e_vec, eigvects_g, eigvects_e, n2
     dip_p_star = spzeros(Complex{Float64}, dim_g, dim_e)
     dip_0_star = spzeros(Complex{Float64}, dim_g, dim_e)
     dip_m_star = spzeros(Complex{Float64}, dim_g, dim_e)
-    #for e = axes(n2Fm_ats_e, 1)
-    #    for g = axes(n2Fm_ats_g, 1)
-    #        dip_p_star[g, e] = conj(e_vec[3]) * (-1) * lin_dip_star(j1, j2, I, e, g, 1, n2Fm_ats_g, n2Fm_ats_e)
-    #        dip_0_star[g, e] = conj(e_vec[2]) * (-1)^0 * lin_dip_star(j1, j2, I, e, g, 0, n2Fm_ats_g, n2Fm_ats_e)
-    #        dip_m_star[g, e] = conj(e_vec[1]) * (-1) * lin_dip_star(j1, j2, I, e, g, -1, n2Fm_ats_g, n2Fm_ats_e)
-    #    end
-    #end
-    for g in 1:1:dim_g  #g in keys(n2Fm_ats_g)
-        for e in 1:1:dim_e #e in keys(n2Fm_ats_e)
-            #dip_p_star[gDictInv[5,g],eDictInv[5,e]]=conj(e_vec[3])*(-1)*lin_dip_star(j1,j2,I,e,g,1)
-            #dip_p_star[gDictInv[5,g],eDictInv[5,e]]=conj(e_vec[3])*(-1)*lmx_dip_star(j1,j2,I,e,g,1,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
-            #dip_0_star[gDictInv[5,g],eDictInv[5,e]]=conj(e_vec[2])*(-1)^0*lmx_dip_star(j1,j2,I,e,g,0,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
-            #dip_m_star[gDictInv[5,g],eDictInv[5,e]]=conj(e_vec[1])*(-1)*lmx_dip_star(j1,j2,I,e,g,-1,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
+
+    for g in 1:1:dim_g  
+        for e in 1:1:dim_e 
+
             dip_p_star[g,e]=conj(e_vec[3])*(-1)*lmx_dip_star(j1,j2,I,e,g,1,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
             dip_0_star[g,e]=conj(e_vec[2])*(-1)^0*lmx_dip_star(j1,j2,I,e,g,0,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
             dip_m_star[g,e]=conj(e_vec[1])*(-1)*lmx_dip_star(j1,j2,I,e,g,-1,eigvects_g,eigvects_e,n2Fm_ats_g,n2Fm_ats_e)
@@ -865,9 +807,8 @@ end
 
 
 
-#dstep_length=dscan/2
 
-#function signals(B₀, par, laz, gDict, eDict, n2Fm_ats_g, n2Fm_ats_e, dscan=dscan, dstep_length=dstep_length, e_vec_obs=e_vec_obs, e_vec_probe=e_vec_probe, sigma=sigma)
+
 function signals(B₀, par, laz, evecs, Doppler_steps)
     # polarization vectors
     e_vec_ex=evecs[1]
@@ -903,14 +844,10 @@ function signals(B₀, par, laz, evecs, Doppler_steps)
                                                                   par.JIfmbasis_ex, par.Jzfmbasis_ex, par.Izfmbasis_ex)
 
     
-    local dip_star = lmx_fillDipoleMatrix_star(par,e_vec_ex,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e) #izveido dipolu matricu
+    local dip_star = lmx_fillDipoleMatrix_star(par,e_vec_ex,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e) #create dipole matrix
     local dip=lmx_fillDipoleMatrix(par,e_vec_ex,eigvects_gr,eigvects_ex,n2Fm_ats_g,n2Fm_ats_e)
     
-    #local dip_star = lin_fillDipoleMatrix_star(par, e_vec_ex, n2Fm_ats_g, n2Fm_ats_e) #izveido dipolu matricu
-    #local dip = lin_fillDipoleMatrix(par, e_vec_ex, n2Fm_ats_g, n2Fm_ats_e)
-
-    #Fm2E_g = Evals_g(par.Izfmbasis_gr, par.Jzfmbasis_gr, par.F²fmbasis_gr, par.dim_g, eigvals_gr, eigvects_gr)
-    #Fm2E_e = Evals_e(par.Izfmbasis_ex, par.Jzfmbasis_ex, par.F²fmbasis_ex, par.dim_e, eigvals_ex, eigvects_ex)
+ 
 
     GAMMA = fill_GAMMA_lmx(par,laz,eigvects_gr, eigvects_ex, n2Fm_ats_g,n2Fm_ats_e)
 
@@ -918,20 +855,20 @@ function signals(B₀, par, laz, evecs, Doppler_steps)
     I_Doplera = 0
 
     local rho_e = spzeros(Complex{Float64}, par.dim_e * par.dim_e)
-    local rho_g = spzeros(Complex{Float64}, par.dim_g * par.dim_g)   ### FHG 2024-02-19
+    local rho_g = spzeros(Complex{Float64}, par.dim_g * par.dim_g)   
 
     for dshift = range(-dscan, step=dstep_length, stop=dscan)
         detune = laz.ω_bar - dshift
 
         matr = spzeros(Complex{Float64}, par.dim_g * par.dim_g + par.dim_e * par.dim_e, par.dim_g * par.dim_g + par.dim_e * par.dim_e)
-        #ksi = fill_ksi(par, laz, Fm2E_g, Fm2E_e, par.dim_g, par.dim_e, detune, n2Fm_ats_g, n2Fm_ats_e)
+        
         ksi = fill_ksi(par, laz, par.dim_g, par.dim_e, detune, eigvals_gr, eigvals_ex)
-        #ksi_cc = fill_ksi_cc(par, laz, Fm2E_g, Fm2E_e, par.dim_e, par.dim_g, detune, n2Fm_ats_g, n2Fm_ats_e)
+        
         ksi_cc = fill_ksi_cc(par, laz, par.dim_e, par.dim_g, detune, eigvals_gr, eigvals_ex)
 
-        #ρDotgg(laz.γ, gDict, matr, par.dim_g, par.dim_e, ksi, ksi_cc, dip, dip_star, Fm2E_g, GAMMA, n2Fm_ats_g)
+       
         ρDotgg(laz.γ, gDict, matr, par.dim_g, par.dim_e, ksi, ksi_cc, dip, dip_star, eigvals_gr, GAMMA)
-        #ρDotee(laz, eDict, gDict, matr, par.dim_g, par.dim_e, ksi, ksi_cc, dip, dip_star, Fm2E_e, n2Fm_ats_e)
+       
         ρDotee(laz, eDict, gDict, matr, par.dim_g, par.dim_e, ksi, ksi_cc, dip, dip_star, eigvals_ex)
 
         lu_matr_sparse = lu(matr)
@@ -943,12 +880,12 @@ function signals(B₀, par, laz, evecs, Doppler_steps)
         @views rho_e_dimge[(par.dim_g+1):(par.dim_g+par.dim_e), (par.dim_g+1):(par.dim_g+par.dim_e)] = rho_e
 
         d_star_nov_dimge = spzeros(Complex{Float64}, par.dim_g + par.dim_e, par.dim_g + par.dim_e)
-        #d_star_nov = nov_fillDipoleMatrix_star(par, e_vec_obs, n2Fm_ats_g, n2Fm_ats_e)
+        
         d_star_nov = nov_fillDipoleMatrix_star(par, e_vec_obs, eigvects_gr, eigvects_ex, n2Fm_ats_g, n2Fm_ats_e)
         @views d_star_nov_dimge[1:par.dim_g, (par.dim_g+1):(par.dim_g+par.dim_e)] = d_star_nov
 
         d_nov_dimge = spzeros(Complex{Float64}, par.dim_g + par.dim_e, par.dim_g + par.dim_e)
-        #d_nov = nov_fillDipoleMatrix(par, e_vec_obs, n2Fm_ats_g, n2Fm_ats_e)
+        
         d_nov = nov_fillDipoleMatrix(par, e_vec_obs, eigvects_gr, eigvects_ex,n2Fm_ats_g, n2Fm_ats_e)
         @views d_nov_dimge[(par.dim_g+1):(par.dim_g+par.dim_e), 1:par.dim_g] = d_nov
 
@@ -958,9 +895,9 @@ function signals(B₀, par, laz, evecs, Doppler_steps)
         @views rho_g = permutedims(reshape(eigen_vectors[1:par.dim_g*par.dim_g], par.dim_g, par.dim_g))
 
         GammaR2 = ((laz.Γ + laz.Δω + laz.γ) / 2)^2
-        #d_star_z = nov_fillDipoleMatrix_star(par, e_vec_probe, n2Fm_ats_g, n2Fm_ats_e)
+        
         d_star_z = nov_fillDipoleMatrix_star(par, e_vec_probe, eigvects_gr, eigvects_ex, n2Fm_ats_g, n2Fm_ats_e)
-        #d_z = nov_fillDipoleMatrix(par, e_vec_probe, n2Fm_ats_g, n2Fm_ats_e)
+        
         d_z = nov_fillDipoleMatrix(par, e_vec_probe, eigvects_gr, eigvects_ex, n2Fm_ats_g, n2Fm_ats_e)
 
         A = 0
@@ -968,7 +905,7 @@ function signals(B₀, par, laz, evecs, Doppler_steps)
             for gk = axes(n2Fm_ats_g, 1)
                 for ei = axes(n2Fm_ats_e, 1)
                     A += (d_z[ei, gj] * rho_g[gj, gk] * d_star_z[gk, ei]) /
-                         #(GammaR2 + (detune - omega_ge(par, gj, ei, Fm2E_g, Fm2E_e, n2Fm_ats_g, n2Fm_ats_e))^2)
+                         
                          (GammaR2 + (detune - (par.Efs + eigvals_ex[ei] - eigvals_gr[gj]))^2)
                 end
             end
@@ -976,13 +913,9 @@ function signals(B₀, par, laz, evecs, Doppler_steps)
         A_Doplera += A * dstep_length * (exp(-(dshift^2) / (2 * sigma^2))) / (sqrt(2 * π) * sigma)
     end
     
-    #return (I_Doplera, A_Doplera) # [I_Doplera, A_Doplera]
-    return (I_Doplera, A_Doplera, rho_g, rho_e) # [I_Doplera, A_Doplera]   ### FHG 2024-02-19 added return for rho_g, rho_e
+    
+    return (I_Doplera, A_Doplera, rho_g, rho_e) 
 end
-
-#signals_for_pmap(B₀) = signals(B₀, par, laz, evecs, Doppler_steps)
-
-
 
 
 end

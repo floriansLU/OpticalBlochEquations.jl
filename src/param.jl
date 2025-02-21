@@ -52,8 +52,8 @@ struct param
     Fzfmbasis_ex::Operator
     F²fmbasis_gr::Operator
     F²fmbasis_ex::Operator
-    Iz_gr::Operator   #### FHG 2024-02-19
-    Jz_gr::Operator   ### FHG 2024-02-19
+    Iz_gr::Operator   
+    Jz_gr::Operator   
     Iz_ex::Operator
     Jz_ex::Operator
     mJmIbasisF²_ex::Operator
@@ -212,8 +212,8 @@ struct param
 
 
         F²fmbasis_ex = TransformMatrix_ex * (mJmIbasisF²_ex) * TransformMatrixDagger_ex
-        #new(J1, J2, nucI, exFmax, exFmin, grFmax, grFmin, S1, S2, L1, L2, gI, A_gr, A_ex, B_ex, Efs, dim_g, dim_e, gJ_gr, gJ_ex, Jzfmbasis_gr, JIfmbasis_gr, Jzfmbasis_ex, JIfmbasis_ex, mJmIbasis_ex, Izfmbasis_gr, Izfmbasis_ex, Fzfmbasis_gr, Fzfmbasis_ex, F²fmbasis_gr, F²fmbasis_ex, Iz_ex, Jz_ex, mJmIbasisF²_ex)  ### FHG 2024-02-19
-        new(J1, J2, nucI, exFmax, exFmin, grFmax, grFmin, S1, S2, L1, L2, gI, A_gr, A_ex, B_ex, Efs, dim_g, dim_e, gJ_gr, gJ_ex, Jzfmbasis_gr, JIfmbasis_gr, Jzfmbasis_ex, JIfmbasis_ex, mJmIbasis_ex, Izfmbasis_gr, Izfmbasis_ex, Fzfmbasis_gr, Fzfmbasis_ex, F²fmbasis_gr, F²fmbasis_ex, Iz_gr, Jz_gr, Iz_ex, Jz_ex, mJmIbasisF²_ex)  ### FHG 2024-02-19
+       
+        new(J1, J2, nucI, exFmax, exFmin, grFmax, grFmin, S1, S2, L1, L2, gI, A_gr, A_ex, B_ex, Efs, dim_g, dim_e, gJ_gr, gJ_ex, Jzfmbasis_gr, JIfmbasis_gr, Jzfmbasis_ex, JIfmbasis_ex, mJmIbasis_ex, Izfmbasis_gr, Izfmbasis_ex, Fzfmbasis_gr, Fzfmbasis_ex, F²fmbasis_gr, F²fmbasis_ex, Iz_gr, Jz_gr, Iz_ex, Jz_ex, mJmIbasisF²_ex)  
 
     end
 
