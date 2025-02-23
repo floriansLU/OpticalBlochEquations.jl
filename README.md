@@ -161,34 +161,28 @@ res = map(signals_for_pmap, Brange)
 More details can be found in the Jupyter notebook ```examples/parallel-OBE.ipynb```
 
 ## Program output and plotting
-The program returns a tuple containing the fluorescence of the pump beam of the specified polarization, the absorption of a weak probe beam of specified polarization, the density matrix of the ground state $\rho_{g_ig_j}$ and the density matrix of the excited state $\rho_{e_ie_j}$.
+The program returns a tuple containing the fluorescence of the pump beam of the specified polarization, the absorption of a weak probe beam of specified polarization, the density matrix of the ground state $\rho_{g_ig_j}$ and the density matrix of the excited state $\rho_{e_ie_j}$.  We can run the program over a a range of magnetic field values defined in `Brange`.
 
-To extract the results, plot them and save them to a file, the following procedure can be used:
 
 ```julia
-CsI=[]
-CsA=[]
-
-for i in 1:length(Brange)
-    push!(CsA,res[1][i][2] |> real)
-    push!(CsI,res[1][i][1] |> real)
+Brange=-40:5:40 
+res=[]
+for B₀ in Brange
+    result=signals(B₀, par, laz, evecs, Doppler_steps)
+    append!(res,result)
 end
+```
 
-default(legend=false)
-p = plot(Brange, CsA)
-plot!(p, title="A ar Doplera efektu", xlabel="B")
-savefig(p, "A-ar-doplera-efektu.png")
+To extract the probe absorption, plot it as a function of magnetic field, and save the results to a file, the following procedure can be used:
 
-p = plot(Brange, CsI)
-plot!(p, title="I ar Doplera efektu", xlabel="B")
-savefig(p, "I-ar-doplera-efektu.png")
+```julia
+x=Brange
+myResults=reshape(res,(4,length(res)))
+y=myResults[2,:] |> real;
+plot(x,y,xlabel="Magnetic Field [G]",ylabel="Probe absorption")
+```
+More details can be found in the Jupyter notebooks ```examples/testing-OBE-D1-transitions.ipynb``` and ```examples/testing-OBE-Rabi-frequency.ipynb```
 
-open("I_Doplera.txt", "w") do io       
-    writedlm(io, [Brange CsI] )               
-end                                   
 
-open("A_Doplera.txt", "w") do io       
-    writedlm(io, [Brange CsA] )                
-end
 ```
 '''
