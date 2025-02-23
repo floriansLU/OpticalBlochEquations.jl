@@ -11,7 +11,7 @@ shell> git clone https://github.com/floriansLU/OpticalBlochEquations.jl.git
 Cloning into 'OpticalBlochEquations.jl'...
 ...
 
-(@v1.8) pkg> activate OpticalBlochEquations.jl
+(@v1.11) pkg> activate OpticalBlochEquations.jl
 Activating project at `~/OpticalBlochEquations.jl`
 
 (Example) pkg> instantiate
@@ -36,17 +36,56 @@ gr()
 
 Then, basic parameters of the transition and laser radiation must be defined.
 
+## Defining the parameters
+Now we set up the calculation. The function `param(cesiumD1)` defines the quantum numbers of the ground and excited states of the Cesium D1 line and create a structure that contain all the necessary operators. The function laser creates a structure for the Rabi frequency, natural line width, transit relaxation, laser frequency, laser linewidth, temperature, atomic mass, and other constants.  
+
+
+
 ```julia
 params = param(cesiumD1)
 laser_params = laser()
 ```
 
-Then, it is necessary to define the polarization vectors for excitation, observation, and probing:
+Then, it is necessary to define the polarization vectors for excitation, observation, and probing.
+The interation of the atomic dipole with the electric field of the light is given by: 
+
+$\hat{V}=-\hat{\mathbf{d}}\cdot\hat{\mathbf{E}}(t)$
+
+The electric field is given by
+
+$\hat{\mathbf{E}}(t)=\varepsilon(t)\mathbf{\epsilon} + \varepsilon^{*}(t)\mathbf{\epsilon^{*}}$
+
+where $\epsilon$ is the polarization vector and 
+
+$\varepsilon(t)=| \varepsilon_{\overline{\omega}}|e^{i\Phi(t)-i(\overline{\omega}-\mathbf{k}_{\overline{\omega}}\cdot \mathbf{v})t}$,
+
+where $\varepsilon_{\overline{\omega}}$ is the amplitude,$\Phi(t)$ is a, possibly, time-dependent phase, $\overline{\omega}$ is the frequency of the light, $\mathbf{k}_{\overline{\omega}}$ is the wave vector of the light, and $\mathbf{v}$ is the velocity of the atom that interacts with the light.    
+
+The polarization is defined using spherical polarization vectors. The spherical polarization vectors correspond to light that is left-circularly polarized ($\epsilon^{+1}$), linearly polarized along the $z$-direction ($\epsilon^{0}$), or right-circularly polarized ($\epsilon^{-1}$):. 
+
+$\epsilon^{+1} = -\frac{1}{\sqrt{2}}\left( \epsilon_x -i \epsilon_y \right)$
+
+$\epsilon^{0} = \epsilon_z$
+
+$\epsilon^{-1} = \frac{1}{\sqrt{2}}\left( \epsilon_x +i \epsilon_y \right)  $
+
+where $\epsilon_q$, $q \in \{x,y,z\}$ are the polarization vector's projection onto the Cartesian coordinate axes. 
+
+Thus, \[1,0,0] would correspond to left-circularly polarized light with electric field vector rotating in the $xy$-plane, \[0,1,0] to light that is linearly polarized along the $z$-axis, and \[0,0,1] would correspond to right-circularly polarized light with the electric-field vector rotating in the $xy$-plane.  
+
+We can rotate into an arbitrary coordinate system using the Euler angles $\alpha$, $\beta$, and $\gamma$. Thus, for example, we could start with linearly polarized light \[0,1,0] and rotate it by $\beta=\pi /2$ into the $xy$-plane to obtain counter-rotating left- and right-circularly polarized light. 
+
+For more details on the polarization, see the following:
+
+\[1]  M. Auzinsh, D. Budker, S. Rochester, Optically Polarized Atoms: Understanding Light-atom Interactions, OUP Oxford, 2010.
+
+\[2] D. A. Varshalovich, A. N. Moskalev, V. K. Khersonskii, [Quantum Theory of Angular Momentum](https://library.oapen.org/handle/20.500.12657/50493), World Scientific Co. Pte. Ltd., Singapore, 2011.
+
 
 ```julia
-e_vec_ex = ElectricVector(1, π / 2, 0).cyclic
-e_vec_obs = ElectricVector(1, π / 2, π / 2).cyclic
-e_vec_probe = ElectricVector(0, π / 2, π / 4).cyclic
+e_vec_ex = ElectricVector([1,0,0], 0, π / 2, 0).cyclic       # left-circularly polarized light; the rotation rotates the propagation from the $z$-direction to the $x$-direction.
+e_vec_obs = ElectricVector([1,0,0], 0, π / 2, π / 2).cyclic  # left-circularly polarized light; the rotation rotates the propagation from the $z$-direction to the $x$-direction.
+e_vec_probe = ElectricVector([0,1,0], 0, π / 2, π / 4).cyclic  # linearly polarized light light whose polarization vector is rotated from being parallel to the $z$-axis to being half-way between the $x$- and $y$-axis in the $xy$-plan.
 evecs=(e_vec_ex,e_vec_obs,e_vec_probe)
 ```
 
@@ -63,7 +102,30 @@ Now we can compute the signals. The output of the function is a tuple that conta
 signals(B₀, params, laser_params, evecs, Doppler_steps)
 ```
 
+More details can be found in the Jupyter notebooks ```examples/testing-OBE-D1-transitions.ipynb``` and ```examples/testing-OBE-Rabi-frequency.ipynb```
+
 ## Plotting a probability surface
+ The probability of a certain angular momentum value can be expressed as a surface in 3-dimensional space as follows:
+
+    $\rho_{FF}(\theta,\phi)=\sqrt{\frac{4\pi}{2J+1}}\sum_{\kappa=0}^{2F}\sum_{q=-\kappa}^{\kappa} \left< F F \kappa 0 | FF \right> \rho^{\kappa q}Y_{\kappa q}(\theta,\phi)$.
+
+
+The polarization moments $\rho^{\kappa q}$ can be expressed as
+
+```math
+\rho^{\kappa q} =\mathrm{Tr}\left(\rho \mathcal{T}_{q}^{\kappa}\right) \\ 
+
+=\sum_{mm'}\rho_{mm'}\left(\mathcal{T}_q^{\kappa} \right)_{mm'}  \\
+
+=\sum_{mm'}(-1)^{F-m}\left< F m' F, -m| \kappa q\right>\rho_{mm'} ,
+```
+
+where the $` \mathcal{T}_q^{\kappa} `$ are irreducible tensor operators called polarization operators and the density matrix is defined as
+
+```math
+    \rho=\sum_{mm'}\rho_{mm'}\left| m \right> \left< m' \right|.
+```
+
 We can plot a probability surface of the atomic angular momentum distribution under the calculated conditions (magnetic field, laser, polarization) as follows
 ```julia
     res=signals_for_pmap(B₀)
@@ -72,9 +134,8 @@ We can plot a probability surface of the atomic angular momentum distribution un
     ρggJ4=ρgg[1:9,1:9]
     J=4
     surface=plotProbSurf(J,ρggJ4)
-    show(surface)
 ```
-
+More details can be found in the Jupyter notebook ```examples/Angular-Momentum-Surface.ipynb```
 
 ## Distributed Computing
 In the event that we would like to calculate the signals over a wide range of magnetic-field values, it might be advantageous to use the Distributed.jl package with the function pmap. 
@@ -97,6 +158,10 @@ Now we can define a range of magnetic field values and run the program in multip
 Brange=-40:5:40  
 res = map(signals_for_pmap, Brange)
 ```
+More details can be found in the Jupyter notebook ```examples/parallel-OBE.ipynb```
+
+## Program output and plotting
+The program returns a tuple containing the fluorescence of the pump beam of the specified polarization, the absorption of a weak probe beam of specified polarization, the density matrix of the ground state $\rho_{g_ig_j}$ and the density matrix of the excited state $\rho_{e_ie_j}$.
 
 To extract the results, plot them and save them to a file, the following procedure can be used:
 
