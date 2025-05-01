@@ -24,9 +24,9 @@ jobs:
       matrix:
         version:
          # - '1.0'
-         # - '1.10'
-         - 1.11  # try this version
-         # - 'nightly'  #commented May 1, 2025 to avoid latest version. 
+         - '1.10'
+         - '1.11'  # try this version, too.
+         # - 'nightly'  #commented May 1, 2025 to avoid latest version. Stick with stable versions for now.
         os:
           - ubuntu-latest
         arch:
